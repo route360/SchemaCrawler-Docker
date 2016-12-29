@@ -29,20 +29,24 @@ FROM openjdk
 
 ARG SCHEMACRAWLER_VERSION
 
+LABEL "us.fatehi.schemacrawler.product-version"="SchemaCrawler ${SCHEMACRAWLER_VERSION}" \
+      "us.fatehi.schemacrawler.website"="http://www.schemacrawler.com" \
+      "us.fatehi.schemacrawler.docker-hub"="https://hub.docker.com/r/sualeh/schemacrawler"
+
 # Install GraphViz
 RUN \
-    apt-get update && \
-    apt-get install -y graphviz && \
-    apt-get clean
+    apt-get update \
+ && apt-get install -y graphviz \
+ && rm -rf /var/lib/apt/lists/*
 
 # Download SchemaCrawler and prepare install directories
 RUN \
-    wget -nv https://github.com/sualeh/SchemaCrawler/releases/download/v"$SCHEMACRAWLER_VERSION"/schemacrawler-"$SCHEMACRAWLER_VERSION"-main.zip && \
-    unzip -q schemacrawler-"$SCHEMACRAWLER_VERSION"-main.zip && \
-    mv schemacrawler-"$SCHEMACRAWLER_VERSION"-main/_schemacrawler schemacrawler && \
-    mv schemacrawler-"$SCHEMACRAWLER_VERSION"-main/_testdb/sc.db schemacrawler/sc.db && \
-    rm schemacrawler-"$SCHEMACRAWLER_VERSION"-main.zip && \
-    rm -rf schemacrawler-"$SCHEMACRAWLER_VERSION"-main
+    wget -nv https://github.com/sualeh/SchemaCrawler/releases/download/v"$SCHEMACRAWLER_VERSION"/schemacrawler-"$SCHEMACRAWLER_VERSION"-main.zip \
+ && unzip -q schemacrawler-"$SCHEMACRAWLER_VERSION"-main.zip \
+ && mv schemacrawler-"$SCHEMACRAWLER_VERSION"-main/_schemacrawler schemacrawler \
+ && mv schemacrawler-"$SCHEMACRAWLER_VERSION"-main/_testdb/sc.db schemacrawler/sc.db \
+ && rm schemacrawler-"$SCHEMACRAWLER_VERSION"-main.zip \
+ && rm -rf schemacrawler-"$SCHEMACRAWLER_VERSION"-main
 
 # Mapping directories
 VOLUME /share
